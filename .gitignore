@@ -1,0 +1,77 @@
+# Xcode
+.DS_Store
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+*.xcworkspace/xcuserdata/
+*.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+
+# SwiftPM
+.build/
+Packages/
+DerivedData/
+
+# CocoaPods
+Pods/
+Podfile.lock
+*.xcworkspace
+
+# Carthage
+Carthage/Build/
+
+# Accio dependency manager
+Dependencies/
+.accio/
+
+# SwiftPM Xcode integration
+.project.xcworkspace
+.swiftpm/xcode/package.xcworkspace
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# Archives and builds
+*.xcarchive
+*.ipa
+*.app
+*.dSYM.zip
+*.dSYM
+*.bcsymbolmap
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.swp
+*~.nib
+
+# Playground
+timeline.xctimeline
+playground.xcworkspace
+
+# Coverage
+*.profdata
+*.gcov
+*.xccovreport
+*.xccovarchive
+
+# Firebase
+GoogleService-Info.plist
+
+# Xcode automatic configuration
+.env
+*.xcconfig
+
+# Realm
+realm/
+*.realm
+*.realm.lock
+
+# Tuist
+Tuist/Dependencies
