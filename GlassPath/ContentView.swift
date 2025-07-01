@@ -41,6 +41,10 @@ enum ButtonType: String {
     }
     
     func offset(expanded: Bool) -> CGSize {
+        guard expanded else {
+            return .zero
+        }
+        
         switch self {
         case .home:
             return offset(atIndex: 0, expanded: expanded)
@@ -54,11 +58,6 @@ enum ButtonType: String {
     }
     
     private func offset(atIndex index: Int, expanded: Bool) -> CGSize {
-        let neutral = CGFloat((4 - index) * 50)
-        guard expanded else {
-            return .init(width: neutral, height: 0)
-        }
-        
         let radius: CGFloat = 120
         let startAngleDeg = -180.0
         let step = 90.0 / Double(4 - 1)
@@ -69,7 +68,7 @@ enum ButtonType: String {
         let x = cos(angleRad) * radius
         let y = sin(angleRad) * radius
         
-        return CGSize(width: neutral + x, height: y)
+        return CGSize(width: x, height: y)
     }
 }
 
@@ -89,7 +88,7 @@ struct ContentView: View {
                 )
             
             GlassEffectContainer {
-                HStack(spacing: 0) {
+                ZStack {
                     button(type: .home)
                     button(type: .write)
                     button(type: .chat)
@@ -122,7 +121,7 @@ struct ContentView: View {
         .glassEffect(.regular.tint(.white.opacity(0.8)).interactive())
         .glassEffectID(type.label, in: glassNamespace)
         .offset(type.offset(expanded: isExpanded))
-        .animation(.spring(duration: type.duration, bounce: 0.2), value: isExpanded)
+        .animation(.spring(duration: type.duration * 3, bounce: 0.2), value: isExpanded)
     }
 }
 
