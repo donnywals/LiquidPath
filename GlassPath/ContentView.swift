@@ -41,6 +41,10 @@ enum ButtonType: String {
     }
     
     func offset(expanded: Bool) -> CGSize {
+        guard expanded else {
+            return .zero
+        }
+        
         switch self {
         case .home:
             return offset(atIndex: 0, expanded: expanded)
@@ -54,11 +58,6 @@ enum ButtonType: String {
     }
     
     private func offset(atIndex index: Int, expanded: Bool) -> CGSize {
-        let neutral = CGFloat((4 - index) * 50)
-        guard expanded else {
-            return .init(width: neutral, height: 0)
-        }
-        
         let radius: CGFloat = 120
         let startAngleDeg = -180.0
         let step = 90.0 / Double(4 - 1)
@@ -69,13 +68,12 @@ enum ButtonType: String {
         let x = cos(angleRad) * radius
         let y = sin(angleRad) * radius
         
-        return CGSize(width: neutral + x, height: y)
+        return CGSize(width: x, height: y)
     }
 }
 
 struct ContentView: View {
     @State private var isExpanded = false
-    @Namespace var glassNamespace
     
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
@@ -88,25 +86,22 @@ struct ContentView: View {
                         .edgesIgnoringSafeArea(.all)
                 )
             
-            GlassEffectContainer {
-                HStack(spacing: 0) {
-                    button(type: .home)
-                    button(type: .write)
-                    button(type: .chat)
-                    button(type: .email)
-                    
-                    Button {
-                        withAnimation {
-                            isExpanded.toggle()
-                        }
-                    } label: {
-                        Label("Home", systemImage: "list.bullet")
-                            .labelStyle(.iconOnly)
-                            .frame(width: 50, height: 50)
-                            .foregroundColor(.white)
+            ZStack {
+                button(type: .home)
+                button(type: .write)
+                button(type: .chat)
+                button(type: .email)
+                
+                Button {
+                    withAnimation {
+                        isExpanded.toggle()
                     }
-                    .glassEffect(.regular.tint(.purple.opacity(0.8)).interactive())
-                    .glassEffectID("menu", in: glassNamespace)
+                } label: {
+                    Label("Home", systemImage: "list.bullet")
+                        .labelStyle(.iconOnly)
+                        .frame(width: 50, height: 50)
+                        .background(Circle().fill(.purple))
+                        .foregroundColor(.white)
                 }
             }.padding(32)
         }
@@ -117,10 +112,9 @@ struct ContentView: View {
             Label(type.label, systemImage: type.systemImage)
                 .labelStyle(.iconOnly)
                 .frame(width: 50, height:50)
+                .background(Circle().fill(.white))
                 .opacity(isExpanded ? 1 : 0)
         }
-        .glassEffect(.regular.tint(.white.opacity(0.8)).interactive())
-        .glassEffectID(type.label, in: glassNamespace)
         .offset(type.offset(expanded: isExpanded))
         .animation(.spring(duration: type.duration, bounce: 0.2), value: isExpanded)
     }
